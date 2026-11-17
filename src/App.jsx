@@ -9,6 +9,7 @@ import EnrolmentComplete from './pages/EnrolmentComplete';
 import Learn from './pages/Learn';
 import Purchases from './pages/Purchases';
 import Terms from './pages/Terms';
+import Contact from './pages/Contact';
 import CartDrawer from './components/CartDrawer';
 import LoginModal from './components/LoginModal';
 import { login, fetchMe, getToken, setToken } from './api';
@@ -77,6 +78,8 @@ export default function App() {
         <Learn courseId={category} user={user} onNavigate={navigate} onLogin={() => setLoginAsk({})} />
       ) : page === 'Terms' ? (
         <Terms />
+      ) : page === 'Contact' ? (
+        <Contact user={user} />
       ) : page === 'Designs' ? (
         <Designs category={category} onNavigate={navigate} cart={cart} onOpenCart={() => setCartOpen(true)} />
       ) : (

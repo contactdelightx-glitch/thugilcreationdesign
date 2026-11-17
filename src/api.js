@@ -92,3 +92,16 @@ export function loadRazorpay() {
   });
   return razorpayLoading;
 }
+
+// "Contact designer": the visitor's requirement, contact details and up to 2 pictures (5 MB each), sent as a form.
+// The login is sent when there is one, so the request is linked to the account.
+export async function sendDesignRequest({ name, phone, email, requirement, notes, files }) {
+  const form = new FormData();
+  Object.entries({ name, phone, email, requirement, notes, source: 'web' }).forEach(([k, v]) => form.append(k, v ?? ''));
+  files.forEach((f) => form.append('images', f));
+  const headers = getToken() ? { Authorization: `Bearer ${getToken()}` } : {};
+  const res = await fetch(`${API}/api/store/design-requests`, { method: 'POST', headers, body: form });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) { const e = new Error(data.error || `Request failed (${res.status})`); e.fields = data.fields || {}; throw e; }
+  return data;
+}

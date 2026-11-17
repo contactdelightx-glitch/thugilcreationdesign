@@ -115,7 +115,7 @@ export default function DesignSheet({ design: d, inCart, onAdd, onRemove, onClos
                 {d.label && <div><dt>Tag</dt><dd>{LABEL[d.label]}</dd></div>}
                 {added && <div><dt>Added on</dt><dd>{added}</dd></div>}
               </dl>
-              <p className="sheet-note">{d.category === 'free_image' ? 'This design is free. Download it with the button below.' : 'The image shown is a preview. You receive the full design file after purchase.'}</p>
+              <p className="sheet-note">{d.category === 'free_image' ? 'This design is free. Download it with the button below.' : 'The image shown is a preview. You receive the full design file after purchase.Once payment is completed, the amount cannot be refunded'}</p>
             </section>
           </div>
 

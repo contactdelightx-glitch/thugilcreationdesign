@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { ShoppingCart01Icon, Menu01Icon, Cancel01Icon, Home01Icon, PaintBoardIcon, ShoppingBag01Icon, Book02Icon, Login01Icon, Logout01Icon, UserIcon, ArrowDown01Icon } from '@hugeicons/core-free-icons';
+import { ShoppingCart01Icon, Menu01Icon, Cancel01Icon, Home01Icon, Shirt01Icon, ShoppingBag01Icon, Book02Icon, CustomerSupportIcon, Login01Icon, Logout01Icon, UserIcon, ArrowDown01Icon } from '@hugeicons/core-free-icons';
 
-const ICONS = { Home: Home01Icon, Designs: PaintBoardIcon, Courses: Book02Icon };
+const ICONS = { Home: Home01Icon, Designs: Shirt01Icon, Courses: Book02Icon, Contact: CustomerSupportIcon };
+const LABELS = { Contact: 'Contact Designer' }; // what the link says, when it differs from the page name
 export const NAV_ITEMS = Object.keys(ICONS); // the links shown in the bar
 export const ROUTES = [...NAV_ITEMS, 'Purchases']; // pages the address can open (Purchases lives in the profile menu)
 
@@ -30,7 +31,7 @@ export default function Navbar({ active, onNavigate, cartCount, onOpenCart, user
           {NAV_ITEMS.map((item) => (
             <a key={item} href={`#${item}`} className={active === item ? 'active' : ''} aria-current={active === item ? 'page' : undefined} onClick={(e) => { e.preventDefault(); go(item); }}>
               <HugeiconsIcon icon={ICONS[item]} size={18} strokeWidth={1.5} />
-              {item}
+              {LABELS[item] || item}
             </a>
           ))}
         </nav>

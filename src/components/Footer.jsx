@@ -32,7 +32,7 @@ export default function Footer({ onNavigate }) {
             <li><a href="#Home" onClick={go('Home')}>Home</a></li>
             <li><a href="#Designs" onClick={go('Designs')}>Collections</a></li>
             <li><a href="#Purchases" onClick={go('Purchases')}>Purchases</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#Contact" onClick={go('Contact')}>Contact Designer</a></li>
             <li><a href="#Terms" onClick={go('Terms')}>Terms &amp; Conditions</a></li>
           </ul>
         </div>
