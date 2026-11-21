@@ -86,60 +86,63 @@ export default function Contact({ user }) {
   return (
     <main className="contact-wrap">
       <header className="contact-head">
-        <span className="eyebrow">Custom design work</span>
+        <div className="contact-tags"><span className="eyebrow">Custom design work</span><span className="contact-save">The cost of the work is usually 15% less</span></div>
         <h1>Contact our designer</h1>
         <p>Tell us what you need designed. Add a picture or two if it helps, and our designer will get back to you.</p>
       </header>
 
       <form className="contact-form" onSubmit={submit} noValidate>
-        <div className="contact-row">
+        <div className="contact-col">
           <label className="field">Your name
             <span className={`input-icon${errors.name ? ' bad' : ''}`}><HugeiconsIcon icon={UserIcon} size={18} strokeWidth={1.5} /><input value={form.name} onChange={set('name')} autoComplete="name" placeholder="Your full name" /></span>
             {errors.name && <em className="form-error">{errors.name}</em>}
           </label>
+
           <label className="field">Phone number
             <span className={`input-icon${errors.phone ? ' bad' : ''}`}><HugeiconsIcon icon={Call02Icon} size={18} strokeWidth={1.5} /><input value={form.phone} onChange={set('phone')} inputMode="tel" autoComplete="tel" placeholder="+91 98765 43210" /></span>
             {errors.phone && <em className="form-error">{errors.phone}</em>}
           </label>
-        </div>
 
-        <label className="field">Email
-          <span className={`input-icon${errors.email ? ' bad' : ''}`}><HugeiconsIcon icon={Mail01Icon} size={18} strokeWidth={1.5} /><input type="email" value={form.email} onChange={set('email')} autoComplete="email" placeholder="you@example.com" /></span>
-          {errors.email && <em className="form-error">{errors.email}</em>}
-        </label>
+          <label className="field">Email
+            <span className={`input-icon${errors.email ? ' bad' : ''}`}><HugeiconsIcon icon={Mail01Icon} size={18} strokeWidth={1.5} /><input type="email" value={form.email} onChange={set('email')} autoComplete="email" placeholder="you@example.com" /></span>
+            {errors.email && <em className="form-error">{errors.email}</em>}
+          </label>
 
-        <label className="field">What do you need?
-          <textarea className={errors.requirement ? 'bad' : ''} rows={5} maxLength={2000} value={form.requirement} onChange={set('requirement')} placeholder="For example: a pallu design with peacocks and a zari border for a wedding saree." />
-          {errors.requirement && <em className="form-error">{errors.requirement}</em>}
-        </label>
-
-        <label className="field">Notes <em>(optional)</em>
-          <textarea rows={3} maxLength={2000} value={form.notes} onChange={set('notes')} placeholder="Colours, size, deadline, budget, or anything else we should know." />
-        </label>
-
-        <div className="field">
-          <span>Pictures <em>(optional, up to {MAX_FILES}, {MAX_MB} MB each)</em></span>
-          <div className="contact-pics">
-            {files.map((f, i) => (
-              <div key={f.url} className="contact-pic">
-                <img src={f.url} alt={`Attached picture ${i + 1}`} />
-                <button type="button" aria-label={`Remove picture ${i + 1}`} onClick={() => removePicture(i)}><HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={2} /></button>
-              </div>
-            ))}
-            {files.length < MAX_FILES && (
-              <button type="button" className="contact-add" onClick={() => pick.current?.click()}
-                onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); addPictures(e.dataTransfer.files); }}>
-                <HugeiconsIcon icon={ImageUploadIcon} size={26} strokeWidth={1.4} />
-                <span>Add a picture</span>
-              </button>
-            )}
+          <div className="field">
+            <span>Pictures <em>(optional, up to {MAX_FILES}, {MAX_MB} MB each)</em></span>
+            <div className="contact-pics">
+              {files.map((f, i) => (
+                <div key={f.url} className="contact-pic">
+                  <img src={f.url} alt={`Attached picture ${i + 1}`} />
+                  <button type="button" aria-label={`Remove picture ${i + 1}`} onClick={() => removePicture(i)}><HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={2} /></button>
+                </div>
+              ))}
+              {files.length < MAX_FILES && (
+                <button type="button" className="contact-add" onClick={() => pick.current?.click()}
+                  onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); addPictures(e.dataTransfer.files); }}>
+                  <HugeiconsIcon icon={ImageUploadIcon} size={24} strokeWidth={1.4} />
+                  <span>Add a picture</span>
+                </button>
+              )}
+            </div>
+            <input ref={pick} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => addPictures(e.target.files)} />
+            {picError && <em className="form-error">{picError}</em>}
           </div>
-          <input ref={pick} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => addPictures(e.target.files)} />
-          {picError && <em className="form-error">{picError}</em>}
         </div>
 
-        {errors.form && <p className="form-error" role="alert">{errors.form}</p>}
-        <button type="submit" className="btn-solid contact-send" disabled={busy}>{busy ? 'Sending…' : 'Send request'}</button>
+        <div className="contact-col">
+          <label className="field grow">What do you need?
+            <textarea className={errors.requirement ? 'bad' : ''} rows={6} maxLength={2000} value={form.requirement} onChange={set('requirement')} placeholder="For example: a pallu design with peacocks and a zari border for a wedding saree." />
+            {errors.requirement && <em className="form-error">{errors.requirement}</em>}
+          </label>
+
+          <label className="field"><span>Notes <em>(optional)</em></span>
+            <textarea rows={4} maxLength={2000} value={form.notes} onChange={set('notes')} placeholder="Colours, size, deadline, budget, or anything else we should know." />
+          </label>
+
+          {errors.form && <p className="form-error" role="alert">{errors.form}</p>}
+          <button type="submit" className="btn-solid contact-send" disabled={busy}>{busy ? 'Sending…' : 'Send request'}</button>
+        </div>
       </form>
     </main>
   );
