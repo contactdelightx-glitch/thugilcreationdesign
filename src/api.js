@@ -102,6 +102,24 @@ export async function sendDesignRequest({ name, phone, email, requirement, notes
   const headers = getToken() ? { Authorization: `Bearer ${getToken()}` } : {};
   const res = await fetch(`${API}/api/store/design-requests`, { method: 'POST', headers, body: form });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) { const e = new Error(data.error || `Request failed (${res.status})`); e.fields = data.fields || {}; throw e; }
+  if (!res.ok) { const e = new Error(data.error || `Request failed (${res.status})`); e.fields = data.fields || {}; e.status = res.status; e.needsPackage = Boolean(data.needs_package); throw e; }
   return data;
+}
+
+// Contact designer packages: pick one (paid with Razorpay), then send work and follow its progress
+export const fetchDesignPackages = () => request('/api/store/design-packages');
+export const fetchDesignSubscription = () => request('/api/store/design-subscription', { auth: true });
+export const startPackageCheckout = (id) => request(`/api/store/design-packages/${id}/checkout`, { method: 'POST', auth: true });
+export const verifyPackagePayment = (payment) => request('/api/store/design-packages/checkout/verify', { method: 'POST', auth: true, body: payment });
+export const fetchMyDesignWorks = () => request('/api/store/design-requests/mine', { auth: true });
+
+// a finished file the designer sent: it needs the login, so it is fetched with it and then saved
+export async function downloadWorkFile(workId, file) {
+  const res = await fetch(`${API}/api/store/design-requests/${workId}/files/${file.id}`, { headers: { Authorization: `Bearer ${getToken()}` } });
+  if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || `Download failed (${res.status})`); }
+  const url = URL.createObjectURL(await res.blob());
+  const a = document.createElement('a');
+  a.href = url; a.download = file.name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }

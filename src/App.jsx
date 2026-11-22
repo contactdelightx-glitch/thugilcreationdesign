@@ -79,7 +79,7 @@ export default function App() {
       ) : page === 'Terms' ? (
         <Terms />
       ) : page === 'Contact' ? (
-        <Contact user={user} />
+        <Contact user={user} onLogin={() => setLoginAsk({ reason: 'Log in to choose a package and send your work.' })} onSessionExpired={() => { doLogout(); setLoginAsk({ reason: 'Your login has expired. Please log in again.' }); }} />
       ) : page === 'Designs' ? (
         <Designs category={category} onNavigate={navigate} cart={cart} onOpenCart={() => setCartOpen(true)} />
       ) : (
